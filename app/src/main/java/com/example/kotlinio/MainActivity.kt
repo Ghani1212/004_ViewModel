@@ -83,6 +83,7 @@ fun TampilanLayout(
 fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
     var textNama by remember{ mutableStateOf("") }
     var textTlp by remember{ mutableStateOf("") }
+    var textAlmt by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataclass : DataForm
@@ -110,6 +111,16 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
             textTlp = it
         }
     )
+    OutlinedTextField(
+        value = textAlmt,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat")},
+        onValueChange ={
+            textAlmt = it
+        }
+    )
 
 
     SelectJK(options = jenis.map { id -> context.resources.getString(id) },
@@ -118,7 +129,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
         })
     Button(modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.BacaData(textNama,textTlp,dataclass.sex)
+            cobaViewModel.BacaData(textNama,textTlp,textAlmt,dataclass.sex)
         }
     ) {
         Text(
@@ -130,6 +141,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
     TextHasil(
         namanya = cobaViewModel.namaUsr,
         telponya =cobaViewModel.noTlp ,
+        alamatnya = cobaViewModel.alamatUsr,
         jenisnya = cobaViewModel.jenisKl
     )
 }
@@ -168,13 +180,12 @@ fun SelectJK(
 }
 
 @Composable
-fun TextHasil(namanya:String, telponya:String, jenisnya:String){
+fun TextHasil(namanya:String, telponya:String, alamatnya:String, jenisnya:String){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        modifier = Modifier
-            .size(width = 300.dp, height = 100.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(text = "Nama : " + namanya,
             modifier = Modifier
@@ -184,10 +195,15 @@ fun TextHasil(namanya:String, telponya:String, jenisnya:String){
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
-        Text(text = "Jenis Kelamin : " + jenisnya,
+        Text(text = "Alamat : " + alamatnya,
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         )
+        Text(text = "Jenis Kelamin : " + jenisnya,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+
 
     }
 }
