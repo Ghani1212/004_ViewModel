@@ -86,6 +86,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
     var textNama by remember{ mutableStateOf("") }
     var textTlp by remember{ mutableStateOf("") }
     var textAlmt by remember { mutableStateOf("") }
+    var textEmail by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataclass : DataForm
@@ -97,7 +98,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
         singleLine = true,
         shape = MaterialTheme.shapes.large,
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Nama Lengkap")},
+        label = { Text(text = "Username")},
         onValueChange ={
             textNama = it
         }
@@ -129,9 +130,19 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
         onSelectionChanged = {
             cobaViewModel.setJenisK(it)
         })
+    OutlinedTextField(
+        value = textEmail,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Email")},
+        onValueChange ={
+            textEmail = it
+        }
+    )
     Button(modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.BacaData(textNama,textTlp,textAlmt,dataclass.sex)
+            cobaViewModel.BacaData(textNama,textTlp,textAlmt,dataclass.sex,textEmail)
         }
     ) {
         Text(
@@ -144,7 +155,8 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
         namanya = cobaViewModel.namaUsr,
         telponya =cobaViewModel.noTlp ,
         alamatnya = cobaViewModel.alamatUsr,
-        jenisnya = cobaViewModel.jenisKl
+        jenisnya = cobaViewModel.jenisKl,
+        emailnya = cobaViewModel.emailUsr
     )
 }
 
@@ -157,11 +169,13 @@ fun SelectJK(
 
 ) {
     var selectedValue by remember { mutableStateOf(" ") }
-
+    Text(text = "Jenis Kelamin :", fontSize = 15.sp)
     Column(modifier = Modifier.padding(16.dp)){
         options.forEach{ item ->
             Row(
-                modifier = Modifier.selectable(
+
+                modifier =
+                Modifier.selectable(
                     selected = selectedValue ==item,
                     onClick = {
                         selectedValue = item
@@ -182,14 +196,14 @@ fun SelectJK(
 }
 
 @Composable
-fun TextHasil(namanya:String, telponya:String, alamatnya:String, jenisnya:String){
+fun TextHasil(namanya:String, telponya:String, alamatnya:String, jenisnya:String, emailnya:String){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = "Nama : " + namanya,
+        Text(text = "Username : " + namanya,
             modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
         )
@@ -204,6 +218,10 @@ fun TextHasil(namanya:String, telponya:String, alamatnya:String, jenisnya:String
         Text(text = "Jenis Kelamin : " + jenisnya,
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(text = "Email : " + emailnya,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
         )
 
 
