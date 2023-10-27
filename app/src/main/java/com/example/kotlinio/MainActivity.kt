@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kotlinio.Data.DataSource.jenis
+import com.example.kotlinio.Data.DataSource.status
 import com.example.kotlinio.Data.DataForm
 import com.example.kotlinio.ui.theme.KotlinIOTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -130,6 +131,10 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
         onSelectionChanged = {
             cobaViewModel.setJenisK(it)
         })
+    SelectStatus(options = status.map { id -> context.resources.getString(id) },
+        onSelectionChanged = {
+            cobaViewModel.setStatus(it)
+        })
     OutlinedTextField(
         value = textEmail,
         singleLine = true,
@@ -142,7 +147,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
     )
     Button(modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.BacaData(textNama,textTlp,textAlmt,dataclass.sex,textEmail)
+            cobaViewModel.BacaData(textNama,textTlp,textAlmt,dataclass.sex,textEmail,dataclass.stat)
         }
     ) {
         Text(
@@ -150,7 +155,7 @@ fun TampilanForm(cobaViewModel: CobaViewModel = viewModel()){
             fontSize = 16.sp
         )
     }
-    Spacer(modifier = Modifier.height(100.dp))
+    Spacer(modifier = Modifier.height(50.dp))
     TextHasil(
         namanya = cobaViewModel.namaUsr,
         telponya =cobaViewModel.noTlp ,
@@ -170,7 +175,39 @@ fun SelectJK(
 ) {
     var selectedValue by remember { mutableStateOf(" ") }
     Text(text = "Jenis Kelamin :", fontSize = 15.sp)
-    Column(modifier = Modifier.padding(16.dp)){
+    Row(modifier = Modifier.padding(10.dp)){
+        options.forEach{ item ->
+            Row(
+
+                modifier =
+                Modifier.selectable(
+                    selected = selectedValue ==item,
+                    onClick = {
+                        selectedValue = item
+                        onSelectionChanged(item)
+                    }
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                RadioButton(selected = selectedValue == item, onClick = {
+                    selectedValue = item
+                    onSelectionChanged(item)
+                }
+                )
+                Text(item)
+            }
+        }
+    }
+}
+@Composable
+fun SelectStatus(
+    options: List<String>,
+    onSelectionChanged: (String) -> Unit = {}
+
+) {
+    var selectedValue by remember { mutableStateOf(" ") }
+    Text(text = "Status :", fontSize = 10.sp)
+    Row(modifier = Modifier.padding(16.dp)){
         options.forEach{ item ->
             Row(
 
@@ -199,7 +236,7 @@ fun SelectJK(
 fun TextHasil(namanya:String, telponya:String, alamatnya:String, jenisnya:String, emailnya:String){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 8.dp
         ),
         modifier = Modifier.fillMaxWidth()
     ) {

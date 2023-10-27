@@ -4,4 +4,6 @@
     <string name="laki">Laki-laki</string>
     <string name="wanita">Wanita</string>
     <string name="Create">Create Your Account</string>
+    <string name="Menikah">Menikah</string>
+    <string name="Belum">Belum Menikah</string>
 </resources>
